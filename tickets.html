@@ -1,0 +1,45 @@
+
+<div id="tickets-list"></div>
+
+<script>
+    $(document).ready(function () {
+        loadTickets();
+    });
+
+    function loadTickets() {
+        $.ajax({
+            url: 'get_tickets.php',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                displayTickets(data);
+            },
+            error: function (error) {
+                console.error('Błąd pobierania danych o biletach:', error);
+            }
+        });
+    }
+
+    function displayTickets(tickets) {
+        var ticketsList = $('#tickets-list');
+        ticketsList.empty();
+
+        if (tickets.length > 0) {
+            var table = $('<table>');
+            table.append('<tr><th>Numer Biletu</th><th>Cena Biletu</th><th>Klasa Biletu</th><th>Status Płatności</th></tr>');
+
+            $.each(tickets, function (index, ticket) {
+                var row = $('<tr>');
+                row.append('<td>' + ticket.NumerBiletu + '</td>');
+                row.append('<td>' + ticket.CenaBiletu + '</td>');
+                row.append('<td>' + ticket.KlasaBiletu + '</td>');
+                row.append('<td>' + ticket.StatusPlatnosci + '</td>');
+                table.append(row);
+            });
+
+            ticketsList.append(table);
+        } else {
+            ticketsList.append('<p>Brak dostępnych biletów.</p>');
+        }
+    }
+</script>

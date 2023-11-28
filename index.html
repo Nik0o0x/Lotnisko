@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Rezerwacji Lotów</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>System Rezerwacji Lotów</h1>
+
+        <nav class="navigation">
+            <ul>
+                <li><a href="#" onclick="loadFlights()">Aktualne Loty</a></li>
+                <li><a href="#" onclick="loadBooking()">Rezerwacja/Bilety</a></li>
+            </ul>
+        </nav>
+
+        <section id="content-section"></section>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            loadFlights();
+        });
+        function loadFlights() {
+            $.ajax({
+                url: 'get_flights.php',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    displayFlights(data);
+                },
+                error: function (error) {
+                    console.error('Błąd pobierania danych o lotach:', error);
+                }
+            });
+        }
+
+
+        function loadBooking() {
+            $('#content-section').load('booking_form.html');
+        }
+
+
+        function displayFlights(flights) {
+            var flightsList = $('#content-section');
+            flightsList.empty();
+
+            if (flights.length > 0) {
+                var table = $('<table>');
+                table.append('<tr><th>Numer Lotu</th><th>Data Odlotu</th><th>Trasa Lotu</th></tr>');
+
+                $.each(flights, function (index, flight) {
+                    var row = $('<tr>');
+                    row.append('<td>' + flight.NumerLotu + '</td>');
+                    row.append('<td>' + flight.DataOdlotu + '</td>');
+                    row.append('<td>' + flight.TrasaLotu + '</td>');
+                    table.append(row);
+                });
+
+                flightsList.append(table);
+            } else {
+                flightsList.append('<p>Brak dostępnych lotów.</p>');
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,15 @@
+
+Pokaż wszystkich pasażerów
+SELECT * FROM Pasażerowie;
+
+Pokaż wszystkie loty do Nowego Jorku
+SELECT * FROM Loty WHERE TrasaLotu LIKE '%Nowy Jork%';
+
+Pokaż zgubione bagaże
+SELECT * FROM Bagaże WHERE StatusBagażu = 'zgubiony';
+
+Pokaż rezerwacje z opłaconymi biletami
+SELECT * FROM ZarezerwowaneBilety WHERE StatusPłatności = 'opłacone';
+
+Pokaż dostępne bramki
+SELECT * FROM ZarządzanieZasobami WHERE RodzajZasobu = 'bramka' AND Dostępność = 'wolna';

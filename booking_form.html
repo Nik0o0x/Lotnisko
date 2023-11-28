@@ -1,0 +1,39 @@
+
+<form id="booking-form">
+    <label for="name">Imię i Nazwisko:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="dob">Data Urodzenia:</label>
+    <input type="date" id="dob" name="dob" required>
+
+    <label for="flight">Numer Lotu:</label>
+    <input type="text" id="flight" name="flight" required>
+
+    <label for="class">Klasa Biletu:</label>
+    <select id="class" name="class" required>
+        <option value="ekonomiczna">Ekonomiczna</option>
+        <option value="biznesowa">Biznesowa</option>
+        <option value="pierwsza">Pierwsza Klasa</option>
+    </select>
+
+    <button type="button" onclick="submitBooking()">Zarezerwuj</button>
+</form>
+
+<div id="booking-response"></div>
+
+<script>
+    function submitBooking() {
+        var formData = $('#booking-form').serialize();
+        $.ajax({
+            url: 'submit_booking.php',
+            type: 'POST',
+            data: formData,
+            success: function (response) {
+                $('#booking-response').html(response);
+            },
+            error: function (error) {
+                console.error('Błąd rezerwacji:', error);
+            }
+        });
+    }
+</script>

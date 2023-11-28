@@ -1,0 +1,45 @@
+<div id="reservations-list"></div>
+
+<script>
+
+    $(document).ready(function () {
+        loadReservations();
+    });
+
+    function loadReservations() {
+        $.ajax({
+            url: 'get_reservations.php',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                displayReservations(data);
+            },
+            error: function (error) {
+                console.error('Błąd pobierania danych o rezerwacjach:', error);
+            }
+        });
+    }
+
+    function displayReservations(reservations) {
+        var reservationsList = $('#reservations-list');
+        reservationsList.empty();
+
+        if (reservations.length > 0) {
+            var table = $('<table>');
+            table.append('<tr><th>Numer Biletu</th><th>Imię i Nazwisko</th><th>Numer Lotu</th><th>Klasa Biletu</th></tr>');
+
+            $.each(reservations, function (index, reservation) {
+                var row = $('<tr>');
+                row.append('<td>' + reservation.NumerBiletu + '</td>');
+                row.append('<td>' + reservation.ImieINazwisko + '</td>');
+                row.append('<td>' + reservation.NumerLotu + '</td>');
+                row.append('<td>' + reservation.KlasaBiletu + '</td>');
+                table.append(row);
+            });
+
+            reservationsList.append(table);
+        } else {
+            reservationsList.append('<p>Brak dostępnych rezerwacji.</p>');
+        }
+    }
+</script>
